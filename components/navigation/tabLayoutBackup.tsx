@@ -37,7 +37,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="shop/shop"
+        name="store/store"
         options={{
           title: "",
           headerShown: false,
@@ -74,6 +74,12 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} icon="search" />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="store/[id]"
+        options={{
+          tabBarStyle: { display: 'none' },
         }}
       />
     </Tabs>

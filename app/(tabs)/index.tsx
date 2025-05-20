@@ -1,75 +1,83 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import FragranceBanner from "@/components/banner/fragranceBanner";
+import GroceriesBanner from "@/components/banner/groceriesBanner";
+import HomeHeader from "@/components/header/homeHeader";
+import Search from "@/components/search/search";
+import CategorySlider from "@/components/slider/categorySlider";
+import ProductHorizontalSlider from "@/components/slider/productHorizontalSlider";
+import { images } from "@/constants/images";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchCategory } from "@/store/slices/categorySlice";
+import { fetchProducts } from "@/store/slices/productSlice";
+import { useEffect, useMemo } from "react";
+import { ImageBackground, ScrollView, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function Index() {
+  const dispatch = useAppDispatch();
+  const { allCategory, loading: isCatLoading } = useAppSelector(state => state.category)
+  useEffect(() => {
+    if (allCategory.length === 0) {
+      dispatch(fetchCategory())
+    }
+  }, [allCategory.length, dispatch])
 
-export default function HomeScreen() {
+  const { allProducts, loading: isProductLoading } = useAppSelector(state => state.products)
+  useEffect(() => {
+    if (allProducts.length === 0) {
+      dispatch(fetchProducts({ skip: 0, limit: 15 }))
+    }
+  }, [])
+
+  const featuredProducts = useMemo(
+    () => allProducts.slice(0, 15),
+    [allProducts]
+  );
+
+  const topDeals = useMemo(
+    () => [...allProducts].sort(
+      (a, b) => b.discountPercentage - a.discountPercentage
+    ).slice(0, 15),
+    [allProducts]
+  );
+
+  const sortedByStock = useMemo(
+    () => [...allProducts].sort((a, b) => b.stock - a.stock).slice(0, 15),
+    [allProducts]
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaProvider>
+      <SafeAreaView className="bg-white">
+        <ScrollView>
+          <ImageBackground source={images.homeHeaderBg} resizeMode="cover" className="w-full bg-cover pb-28">
+            <HomeHeader />
+            <View className="p-4">
+              <Search />
+            </View>
+            <View className="pb-6">
+              <CategorySlider isHeadingAvailable={false} isLoading={isCatLoading} sliderData={allCategory} />
+            </View>
+          </ImageBackground>
+          <View className="-mt-32">
+            <ProductHorizontalSlider sectionTitle="featured products" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={featuredProducts} sectionHeadingIsWhite={true} />
+          </View>
+          <View>
+            <ProductHorizontalSlider sectionTitle="Top Deals For You" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={topDeals} isTopDeals={true} />
+          </View>
+          <View>
+            <GroceriesBanner />
+          </View>
+          <View className="mt-8">
+            <ProductHorizontalSlider sectionTitle="recently bought" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={sortedByStock} />
+          </View>
+          <View>
+            <FragranceBanner />
+          </View>
+          <View className="py-6">
+            <CategorySlider isHeadingAvailable={true} sectionTitle="Products You May Love" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isCatLoading} sliderData={allCategory} bottomRoundedItem={true} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});

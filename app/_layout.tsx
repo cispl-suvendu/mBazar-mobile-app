@@ -1,29 +1,67 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import Loading from "@/components/skeleton/loading";
+import { store } from "@/store/store";
+import { Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from "@expo-google-fonts/inter";
+import {
+  Jost_300Light,
+  Jost_400Regular,
+  Jost_500Medium,
+  Jost_600SemiBold,
+  useFonts,
+} from '@expo-google-fonts/jost';
+import { MaterialSymbols_400Regular } from "@expo-google-fonts/material-symbols";
+import { Stack } from "expo-router";
+import { StatusBar } from "react-native";
+import { ToastProvider } from 'react-native-toast-notifications';
+import { Provider } from "react-redux";
+import "./global.css";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  const [fontsLoaded] = useFonts({
+    Jost_300Light,
+    Jost_400Regular,
+    Jost_500Medium,
+    Jost_600SemiBold,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    MaterialSymbols_400Regular
   });
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+  if (!fontsLoaded) {
+    return <Loading />;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    <>
+      <Provider store={store}>
+        <ToastProvider offset={200} duration={2000} animationDuration={250} successColor="#2D8B56">
+          <StatusBar translucent backgroundColor="transparent" />
+          <Stack>
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="shop/[id]"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="product/[id]"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="+not-found" options={{
+              headerShown: false,
+            }} />
+          </Stack>
+        </ToastProvider>
+      </Provider>
+    </>
+  )
 }
