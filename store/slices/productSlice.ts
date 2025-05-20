@@ -132,6 +132,11 @@ const productsSlice = createSlice({
       } else {
         return
       }
+    },
+    handleRemoveWishListItem: (state, action) => {
+      const removeItem = action.payload
+      const getCurrentListing = state.wishListItem.filter(item => item.id !== removeItem.id)
+      state.wishListItem = getCurrentListing
     }
 
   },
@@ -178,7 +183,7 @@ const productsSlice = createSlice({
 
 
 export default productsSlice.reducer;
-export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList } = productsSlice.actions;
+export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem } = productsSlice.actions;
 
 
 

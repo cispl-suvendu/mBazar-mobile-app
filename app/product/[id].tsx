@@ -42,7 +42,7 @@ export default function SingleProduct() {
         else {
             setWihListActive(false)
         }
-    }, [wishListItem.length])
+    }, [wishListItem.length, currentProduct?.title])
 
 
     const addToCart = () => {

@@ -1,6 +1,6 @@
-import CartCard from '@/components/cart/cartCard';
 import EmptyPage from '@/components/empty/emptyPage';
 import CommonHeader from '@/components/header/commonHeader';
+import WishListCard from '@/components/wishlist/wishlistCard';
 import { useAppSelector } from '@/store/hooks';
 import React from 'react';
 import { FlatList, View } from 'react-native';
@@ -18,7 +18,7 @@ export default function Wishlist() {
           {wishListItem.length > 0 ?
             <FlatList
               data={wishListItem}
-              renderItem={({ item }) => <CartCard item={item} />}
+              renderItem={({ item }) => <WishListCard item={item} />}
               keyExtractor={item => item.id.toString()}
             /> :
             <EmptyPage title='Your wihlist is empty' icon='favorite' description='Looks like you have not added anything to your wishlist. Go ahed and explore top categories.' linkLable='explore Categories' linkUrl='/(tabs)/shop/shop' />
