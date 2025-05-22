@@ -92,7 +92,10 @@ export interface ProductsState {
     currentProduct: Product,
     cartItms:Product[],
     wishListItem: Product[],
-    currentProductQuantity:number
+    currentProductQuantity:number,
+    searchResult:Product[],
+    searchQ: string,
+    searchResultLoading: boolean
   }
 
   export interface CategoryState {
@@ -108,3 +111,8 @@ export interface EmptyPageProps {
     linkUrl:any,
     icon:string
 }
+
+export interface searchProductsArgs {
+    searchQ: string
+}
+

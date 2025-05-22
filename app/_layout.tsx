@@ -36,7 +36,7 @@ export default function RootLayout() {
     <>
       <Provider store={store}>
         <ToastProvider offset={200} duration={2000} animationDuration={250} successColor="#2D8B56">
-          <StatusBar translucent backgroundColor="transparent" />
+          <StatusBar/>
           <Stack>
             <Stack.Screen
               name="(tabs)"

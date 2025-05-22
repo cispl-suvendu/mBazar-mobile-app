@@ -1,5 +1,6 @@
 import CommonHeader from '@/components/header/commonHeader';
 import BottomNav from '@/components/navigation/bottomNav';
+import SingleProductSkeleton from '@/components/skeleton/skeletonSingleProduct';
 import ProductHorizontalSlider from '@/components/slider/productHorizontalSlider';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addQuantity, clearCurrentProduct, clearProductsByCategory, fetchProductsByCat, fetchSingleProduct, handleAddToCart, handleAddToWishList, removeQuantity, setDefaultQuantity } from '@/store/slices/productSlice';
@@ -63,7 +64,7 @@ export default function SingleProduct() {
             if (wishListActive) {
                 dispatch(handleAddToWishList())
                 toast.show(`${currentProduct.title} has been added to your wishlist`, {
-                    type: 'warning',
+                    type: 'normal',
                 })
             } else {
                 toast.show(`You have already added ${currentProduct.title} to your wishlist`, {
@@ -87,7 +88,7 @@ export default function SingleProduct() {
                     </View>
                     <ScrollView>
                         {loading ?
-                            <Text>Loading...</Text>
+                            <SingleProductSkeleton />
                             : <View>
                                 <View className='flex justify-center items-center'>
                                     {currentProduct.thumbnail !== '' && <Image source={{ uri: currentProduct?.thumbnail }} style={{ width: 260, height: 260 }} className='w-[260px] h-auto object-contain' resizeMode='contain' />}

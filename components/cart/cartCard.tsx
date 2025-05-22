@@ -24,17 +24,17 @@ export default function CartCard({ item }: { item: Product }) {
             <View>
                 <View className='bg-white rounded-full px-2 border border-gray'>
                     <View className='flex flex-row justify-between items-center'>
-                        <TouchableHighlight className='p-2' activeOpacity={0.2}
+                        {/* <TouchableHighlight className='p-2' activeOpacity={0.2}
                             underlayColor=""
                             onPress={() => alert('hello')}>
                             <Text className='font-icon text-mediumTitle text-grayDark '>do_not_disturb_on</Text>
-                        </TouchableHighlight>
+                        </TouchableHighlight> */}
                         <Text className='font-InterSemiBold text-grayDark text-mediumTitle'>{item.quantity}</Text>
-                        <TouchableHighlight className='p-2' activeOpacity={0.2}
+                        {/* <TouchableHighlight className='p-2' activeOpacity={0.2}
                             underlayColor=""
                             onPress={() => alert('hello')}>
                             <Text className='font-icon text-mediumTitle text-grayDark '>add_circle</Text>
-                        </TouchableHighlight>
+                        </TouchableHighlight> */}
                     </View>
                 </View>
             </View>

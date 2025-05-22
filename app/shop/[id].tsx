@@ -1,6 +1,8 @@
 import CommonHeader from '@/components/header/commonHeader';
 import BottomNav from '@/components/navigation/bottomNav';
 import ProductCard from '@/components/product/product';
+import ProductSkeleton from '@/components/skeleton/skeletonProduct';
+import { dummyProduct } from '@/constants/dummyData';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { clearProductsByCategory, fetchProductsByCat } from '@/store/slices/productSlice';
 import { useLocalSearchParams } from 'expo-router';
@@ -56,7 +58,22 @@ export default function SignleCategory() {
                 <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                     <StatusBar translucent backgroundColor="transparent" />
                     <CommonHeader title={catName} />
-                    {loading ? <Text>Loading...</Text> : <FlatList
+                    {loading ? <FlatList
+                        data={dummyProduct}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => <ProductSkeleton />}
+                        numColumns={2}
+                        contentContainerStyle={{
+                            paddingTop: 20,
+                            paddingBottom: 300,
+                            gap: 25,
+                            justifyContent: 'center',
+                        }}
+                        columnWrapperStyle={{
+                            justifyContent: 'center',
+                            paddingHorizontal: 25,
+                        }}
+                    /> : <FlatList
                         data={productsByCategory}
                         keyExtractor={(item) => item.title.toString()}
                         renderItem={({ item }) => <ProductCard item={item} />}

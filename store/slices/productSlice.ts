@@ -1,4 +1,4 @@
-import { FetchProductsArgs, fetchProductsByCatArgs, fetchSingleProductArgs, Product, ProductsState, SortProductsArgs } from '@/types';
+import { FetchProductsArgs, fetchProductsByCatArgs, fetchSingleProductArgs, Product, ProductsState, searchProductsArgs, SortProductsArgs } from '@/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
@@ -45,6 +45,14 @@ export const fetchSingleProduct = createAsyncThunk(
   }
 );
 
+export const searchProducts = createAsyncThunk(
+  'products/searchProducts',
+  async ({ searchQ }: searchProductsArgs) => {
+    const response = await fetch(`https://dummyjson.com/products/search?q=${searchQ}`);
+    const { products } = await response.json();
+    return products;
+  }
+);
 
 const initialState: ProductsState = {
   allProducts: [],
@@ -72,7 +80,10 @@ const initialState: ProductsState = {
   },
   currentProductQuantity: 1,
   cartItms: [],
-  wishListItem: []
+  wishListItem: [],
+  searchResult: [],
+  searchQ: '',
+  searchResultLoading: true
 };
 
 const productsSlice = createSlice({
@@ -118,7 +129,7 @@ const productsSlice = createSlice({
       } else {
         state.cartItms.push(item);
       }
-      
+
     },
     handleRemoveCartItem: (state, action) => {
       const { id } = action.payload
@@ -137,7 +148,18 @@ const productsSlice = createSlice({
       const removeItem = action.payload
       const getCurrentListing = state.wishListItem.filter(item => item.id !== removeItem.id)
       state.wishListItem = getCurrentListing
-    }
+    },
+    setSearchQ: (state, action) => {
+      state.searchQ = action.payload
+    },
+    clearSearchResult: (state) => {
+      state.searchResult = initialState.searchResult
+      state.searchResultLoading = true;
+    },
+    clearSetSearchQ: (state) => {
+      state.searchQ = initialState.searchQ
+      state.searchResultLoading = true;
+    },
 
   },
   extraReducers: (builder) => {
@@ -178,12 +200,22 @@ const productsSlice = createSlice({
       .addCase(fetchSingleProduct.rejected, (state) => {
         state.loading = false;
       })
+      .addCase(searchProducts.pending, (state) => {
+        state.searchResultLoading = true;
+      })
+      .addCase(searchProducts.fulfilled, (state, action) => {
+        state.searchResult = action.payload;
+        state.searchResultLoading = false;
+      })
+      .addCase(searchProducts.rejected, (state) => {
+        state.searchResultLoading = false;
+      })
   },
 });
 
 
 export default productsSlice.reducer;
-export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem } = productsSlice.actions;
+export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem, clearSearchResult, setSearchQ, clearSetSearchQ } = productsSlice.actions;
 
 
 
