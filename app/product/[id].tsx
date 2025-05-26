@@ -15,7 +15,7 @@ export default function SingleProduct() {
     const { id } = useLocalSearchParams();
     const productId = Array.isArray(id) ? id[0] : id;
     const dispatch = useAppDispatch()
-    const { currentProduct, loading, productsByCategory, currentProductQuantity, wishListItem } = useAppSelector(state => state.products)
+    const { currentProduct, loading, productsByCategory, currentProductQuantity, wishListItem, cartItms } = useAppSelector(state => state.products)
     useEffect(() => {
         dispatch(fetchSingleProduct({ id: productId }))
         return () => {
@@ -46,7 +46,7 @@ export default function SingleProduct() {
     }, [wishListItem.length, currentProduct?.title])
 
 
-    const addToCart = () => {
+    const addToCart = async () => {
         try {
             dispatch(handleAddToCart())
             toast.show(`${currentProduct.title} has been added to your cart`, {
@@ -59,7 +59,7 @@ export default function SingleProduct() {
         }
     }
 
-    const addToWishList = () => {
+    const addToWishList = async () => {
         try {
             if (wishListActive) {
                 dispatch(handleAddToWishList())
@@ -98,8 +98,8 @@ export default function SingleProduct() {
                                         <TouchableHighlight className='absolute right-4 top-1 w-12 h-12 rounded-full' activeOpacity={0.6}
                                             underlayColor="#DDDDDD"
                                             onPress={() => addToWishList()}>
-                                            <View className='bg-white w-12 h-12 rounded-full shadow-[0_6px_20px_text-shadow] flex justify-center items-center'>
-                                                <Text className={`font-icon text-bigTitle ${wishListActive ? 'text-black' : 'text-accent'}`}>favorite</Text>
+                                            <View className={`${wishListActive ? 'bg-white' : 'bg-red'} w-12 h-12 rounded-full shadow-[0_6px_20px_text-shadow] flex justify-center items-center`}>
+                                                <Text className={`font-icon text-bigTitle ${wishListActive ? 'text-black' : 'text-white'}`}>favorite</Text>
                                             </View>
                                         </TouchableHighlight>
                                         <View className='inline-flex w-auto flex-row flex-grow-0'>

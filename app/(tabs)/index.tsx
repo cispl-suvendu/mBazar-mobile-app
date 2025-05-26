@@ -46,38 +46,40 @@ export default function Index() {
   );
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView className="bg-white">
-        <ScrollView>
-          <ImageBackground source={images.homeHeaderBg} resizeMode="cover" className="w-full bg-cover pb-28">
-            <HomeHeader />
-            <View className="p-4">
-              <Search />
+    <>
+      <SafeAreaProvider>
+        <SafeAreaView className="bg-white">
+          <ScrollView>
+            <ImageBackground source={images.homeHeaderBg} resizeMode="cover" className="w-full bg-cover pb-28">
+              <HomeHeader />
+              <View className="p-4">
+                <Search />
+              </View>
+              <View className="pb-6">
+                <CategorySlider isHeadingAvailable={false} isLoading={isCatLoading} sliderData={allCategory} />
+              </View>
+            </ImageBackground>
+            <View className="-mt-32">
+              <ProductHorizontalSlider sectionTitle="featured products" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={featuredProducts} sectionHeadingIsWhite={true} />
             </View>
-            <View className="pb-6">
-              <CategorySlider isHeadingAvailable={false} isLoading={isCatLoading} sliderData={allCategory} />
+            <View>
+              <ProductHorizontalSlider sectionTitle="Top Deals For You" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={topDeals} isTopDeals={true} />
             </View>
-          </ImageBackground>
-          <View className="-mt-32">
-            <ProductHorizontalSlider sectionTitle="featured products" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={featuredProducts} sectionHeadingIsWhite={true} />
-          </View>
-          <View>
-            <ProductHorizontalSlider sectionTitle="Top Deals For You" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={topDeals} isTopDeals={true} />
-          </View>
-          <View>
-            <GroceriesBanner />
-          </View>
-          <View className="mt-8">
-            <ProductHorizontalSlider sectionTitle="recently bought" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={sortedByStock} />
-          </View>
-          <View>
-            <FragranceBanner />
-          </View>
-          <View className="py-6">
-            <CategorySlider isHeadingAvailable={true} sectionTitle="Products You May Love" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isCatLoading} sliderData={allCategory} bottomRoundedItem={true} />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+            <View>
+              <GroceriesBanner />
+            </View>
+            <View className="mt-8">
+              <ProductHorizontalSlider sectionTitle="recently bought" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isProductLoading} sliderData={sortedByStock} />
+            </View>
+            <View>
+              <FragranceBanner />
+            </View>
+            <View className="py-6">
+              <CategorySlider isHeadingAvailable={true} sectionTitle="Products You May Love" sectionButtonLabel="See All" sectionButtonLink="/shop/shop" isLoading={isCatLoading} sliderData={allCategory} bottomRoundedItem={true} />
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </>
   );
 }

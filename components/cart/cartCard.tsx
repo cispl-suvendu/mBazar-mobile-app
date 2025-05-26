@@ -3,9 +3,23 @@ import { handleRemoveCartItem } from '@/store/slices/productSlice'
 import { Product } from '@/types'
 import React from 'react'
 import { Image, Text, TouchableHighlight, View } from 'react-native'
+import { useToast } from 'react-native-toast-notifications'
 
 export default function CartCard({ item }: { item: Product }) {
+    const toast = useToast();
     const dispath = useAppDispatch()
+    const handleRemoveItem = (item: Product) => {
+        try {
+            dispath(handleRemoveCartItem(item))
+            toast.show(`${item.title} has been removed from your cart`, {
+                type: 'normal',
+            })
+        } catch (err) {
+            toast.show(err, {
+                type: 'danger',
+            })
+        }
+    }
     return (
         <View className='flex flex-row justify-between items-center gap-6 mb-4 pb-4 border-b-2 border-gray'>
             <View className='bg-gray w-[90px] h-[90px] rounded-2xl border border-gray flex justify-center items-center'>
@@ -15,7 +29,7 @@ export default function CartCard({ item }: { item: Product }) {
                 <Text className='font-JostSemiBold text-black text-listTitle leading-none'>{item.title}</Text>
                 <Text className='font-InterMedium text-paragraph text-accent mt-1'>${item.price}</Text>
                 <View className='mt-2'>
-                    <TouchableHighlight onPress={() => dispath(handleRemoveCartItem(item))} activeOpacity={0.2}
+                    <TouchableHighlight onPress={() => handleRemoveItem(item)} activeOpacity={0.2}
                         underlayColor="">
                         <Text className='font-icon text-red text-mediumTitle'>delete</Text>
                     </TouchableHighlight>

@@ -1,4 +1,5 @@
 import Loading from "@/components/skeleton/loading";
+import UserInfo from "@/components/user/userInfo";
 import { store } from "@/store/store";
 import { Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from "@expo-google-fonts/inter";
 import {
@@ -61,6 +62,7 @@ export default function RootLayout() {
             }} />
           </Stack>
         </ToastProvider>
+        <UserInfo />
       </Provider>
     </>
   )

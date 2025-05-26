@@ -160,7 +160,22 @@ const productsSlice = createSlice({
       state.searchQ = initialState.searchQ
       state.searchResultLoading = true;
     },
-
+    getSavedCartItems: (state, action) => {
+      const savedCartItems = action.payload;
+      if (Array.isArray(savedCartItems)) {
+        state.cartItms = savedCartItems;
+      } else {
+        console.error('Invalid cart items format');
+      }
+    },
+    getSavedWishListItems: (state, action) => {
+      const savedWishListItems = action.payload;
+      if (Array.isArray(savedWishListItems)) {
+        state.wishListItem = savedWishListItems;
+      } else {
+        console.error('Invalid wish list items format');
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -215,7 +230,7 @@ const productsSlice = createSlice({
 
 
 export default productsSlice.reducer;
-export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem, clearSearchResult, setSearchQ, clearSetSearchQ } = productsSlice.actions;
+export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem, clearSearchResult, setSearchQ, clearSetSearchQ, getSavedCartItems, getSavedWishListItems } = productsSlice.actions;
 
 
 

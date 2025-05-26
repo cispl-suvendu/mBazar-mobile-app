@@ -116,3 +116,15 @@ export interface searchProductsArgs {
     searchQ: string
 }
 
+export interface userInfoData {
+    name: string,
+    savedName:string,
+    loading?: boolean,
+    ipInfo?: {
+        ip: string;
+        city: string;
+        region: string;
+        country: string;
+        postal:string
+    }
+}

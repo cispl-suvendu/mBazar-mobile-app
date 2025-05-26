@@ -29,6 +29,9 @@ export default function SearchPage() {
           <Search />
         </View>
         <View>
+          <View className='px-4 mt-10 mb-2'>
+            <Text className={`font-JostSemiBold text-mediumTitle capitalize text-black text-center`}>trending categories</Text>
+          </View>
           <FlatList
             data={listCategory}
             numColumns={2}
