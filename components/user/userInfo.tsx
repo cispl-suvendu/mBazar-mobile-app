@@ -14,7 +14,7 @@ export default function UserInfo() {
 
     const storeUserName = async () => {
         try {
-            await AsyncStorage.setItem('YName', name);
+            await AsyncStorage.setItem('x-Name', name);
             setIsSubmited(false)
         } catch (e) {
             console.log(e);
@@ -23,7 +23,7 @@ export default function UserInfo() {
 
     const getUserName = async () => {
         try {
-            const value = await AsyncStorage.getItem('YName');
+            const value = await AsyncStorage.getItem('x-Name');
             if (value !== null) {
                 dispatch(setUserSavedName(value));
             }
@@ -72,9 +72,9 @@ export default function UserInfo() {
     },[wishListItem.length, cartItms.length])
 
     const maxLength = 8;
+    
 
-
-    if (hasCheckedStorage && !savedName && !isSubmited) return (
+    if (hasCheckedStorage && !savedName && isSubmited) return (
         <>
             <View className="absolute bg-black h-full w-full z-10 opacity-85" />
             <View className="absolute z-20 bg-white p-8 py-10 w-full bottom-0 shadow-[0_-8px_20px_text-shadow] rounded-tr-[30px] rounded-tl-[30px]">
@@ -90,7 +90,7 @@ export default function UserInfo() {
                 <TouchableHighlight
                     activeOpacity={0.6}
                     underlayColor="#DDDDDD"
-                    onPress={storeUserName}
+                    onPress={()=>storeUserName()}
                     className='bg-accent px-8 py-5 rounded-full'
                 >
                     <Text className='font-InterSemiBold text-white text-listTitle capitalize leading-none text-center'>Get Started</Text>
