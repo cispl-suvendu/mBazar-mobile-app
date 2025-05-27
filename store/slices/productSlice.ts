@@ -1,11 +1,12 @@
 import { FetchProductsArgs, fetchProductsByCatArgs, fetchSingleProductArgs, Product, ProductsState, searchProductsArgs, SortProductsArgs } from '@/types';
+import { API_URL } from '@env';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async ({ skip, limit }: FetchProductsArgs) => {
-    const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
+    const response = await fetch(`${API_URL}/products?limit=${limit}&skip=${skip}`);
     const data = await response.json();
     return {
       products: data.products as Product[],
@@ -19,7 +20,7 @@ export const fetchProducts = createAsyncThunk(
 export const fetchProductsByCat = createAsyncThunk(
   'products/fetchProductsByCat',
   async ({ catName }: fetchProductsByCatArgs) => {
-    const response = await fetch(`https://dummyjson.com/products/category/${catName}`);
+    const response = await fetch(`${API_URL}/products/category/${catName}`);
     const data = await response.json();
     return {
       products: data.products as Product[],
@@ -30,7 +31,7 @@ export const fetchProductsByCat = createAsyncThunk(
 export const sortProdcutsBy = createAsyncThunk(
   'products/sortProdcutsBy',
   async ({ sortBy, order }: SortProductsArgs) => {
-    const response = await fetch(`https://dummyjson.com/products?sortBy=${sortBy}&order=${order}`);
+    const response = await fetch(`${API_URL}/products?sortBy=${sortBy}&order=${order}`);
     const data = await response.json();
     return data;
   }
@@ -39,7 +40,7 @@ export const sortProdcutsBy = createAsyncThunk(
 export const fetchSingleProduct = createAsyncThunk(
   'products/fetchSingleProduct',
   async ({ id }: fetchSingleProductArgs) => {
-    const response = await fetch(`https://dummyjson.com/products/${id}`);
+    const response = await fetch(`${API_URL}/products/${id}`);
     const data = await response.json();
     return data;
   }
@@ -48,7 +49,7 @@ export const fetchSingleProduct = createAsyncThunk(
 export const searchProducts = createAsyncThunk(
   'products/searchProducts',
   async ({ searchQ }: searchProductsArgs) => {
-    const response = await fetch(`https://dummyjson.com/products/search?q=${searchQ}`);
+    const response = await fetch(`${API_URL}/products/search?q=${searchQ}`);
     const { products } = await response.json();
     return products;
   }
@@ -175,6 +176,9 @@ const productsSlice = createSlice({
       } else {
         console.error('Invalid wish list items format');
       }
+    },
+    clearCart:(state) => {
+      state.cartItms = initialState.cartItms
     }
   },
   extraReducers: (builder) => {
@@ -230,7 +234,7 @@ const productsSlice = createSlice({
 
 
 export default productsSlice.reducer;
-export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem, clearSearchResult, setSearchQ, clearSetSearchQ, getSavedCartItems, getSavedWishListItems } = productsSlice.actions;
+export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem, clearSearchResult, setSearchQ, clearSetSearchQ, getSavedCartItems, getSavedWishListItems, clearCart } = productsSlice.actions;
 
 
 

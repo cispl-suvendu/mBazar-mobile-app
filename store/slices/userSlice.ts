@@ -1,4 +1,5 @@
 import { userInfoData } from '@/types';
+import { IP_API_TOKEN, IP_API_URL } from '@env';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
@@ -8,14 +9,15 @@ const initialState: userInfoData = {
     name: '',
     savedName: '',
     loading: false,
-    ipInfo: undefined
+    ipInfo: undefined,
+    deliverAddress:undefined
 };
 
 
 export const fetchIpInfo = createAsyncThunk(
     'useinfo/location',
     async () => {
-        const response = await fetch(`https://ipinfo.io/json?token=ffc1c2b8ca5434`);
+        const response = await fetch(`${IP_API_URL}/json?token=${IP_API_TOKEN}`);
         const data = await response.json();
         return data;
     }
@@ -30,6 +32,9 @@ const userSlice = createSlice({
         },
         setUserSavedName: (state, action) => {
             state.savedName = action.payload
+        },
+        setAddress:(state, action) => {
+            state.deliverAddress = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -50,7 +55,7 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const { setUserName, setUserSavedName } = userSlice.actions
+export const { setUserName, setUserSavedName , setAddress} = userSlice.actions
 
 
 

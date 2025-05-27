@@ -1,3 +1,4 @@
+import { KeyboardTypeOptions } from 'react-native';
 export interface Product {
     id: number;
     title: string;
@@ -126,5 +127,29 @@ export interface userInfoData {
         region: string;
         country: string;
         postal:string
-    }
+    },
+    deliverAddress?: AddressFormValues
+}
+
+export interface AddressFormValues {
+    fullName: string;
+    phone: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    state: string;
+    zipCode: string;
+}
+
+export interface DeliveryAddressFormProps {
+    onSubmit: (values: AddressFormValues) => void;
+}
+
+export interface FormFieldProps {
+    label: string;
+    value: string;
+    onChangeText: (text: string) => void;
+    onBlur: (e: any) => void;
+    error?: string;
+    keyboardType?: KeyboardTypeOptions;
 }

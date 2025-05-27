@@ -1,11 +1,11 @@
 import { CategoryState } from '@/types';
+import { API_URL } from '@env';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
 
 export const fetchCategory = createAsyncThunk(
     'category/fetchCategory',
     async () => {
-        const response = await fetch(`https://dummyjson.com/products/categories`);
+        const response = await fetch(`${API_URL}/products/categories`);
         const data = await response.json();
         return data;
     }
