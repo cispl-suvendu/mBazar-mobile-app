@@ -6,11 +6,12 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addQuantity, clearCurrentProduct, clearProductsByCategory, fetchProductsByCat, fetchSingleProduct, handleAddToCart, handleAddToWishList, removeQuantity, setDefaultQuantity } from '@/store/slices/productSlice';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, TouchableHighlight, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, Text, TouchableHighlight, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useToast } from "react-native-toast-notifications";
 
 export default function SingleProduct() {
+    const [showAnimation, setShowAnimation] = useState(false)
     const toast = useToast();
     const { id } = useLocalSearchParams();
     const productId = Array.isArray(id) ? id[0] : id;
@@ -48,6 +49,7 @@ export default function SingleProduct() {
 
     const addToCart = async () => {
         try {
+            setShowAnimation(true)
             dispatch(handleAddToCart())
             toast.show(`${currentProduct.title} has been added to your cart`, {
                 type: 'success',
@@ -56,6 +58,10 @@ export default function SingleProduct() {
             toast.show(err.meaasge, {
                 type: 'danger',
             })
+        } finally {
+            setTimeout(() => {
+                setShowAnimation(false)
+            }, 400)
         }
     }
 
@@ -152,8 +158,8 @@ export default function SingleProduct() {
                         <View>
                             <TouchableHighlight activeOpacity={0.6}
                                 underlayColor="#DDDDDD"
-                                onPress={() => addToCart()} className='bg-accent px-8 py-5 rounded-full'>
-                                <Text className='font-InterSemiBold text-white text-listTitle capitalize leading-none'>buy now</Text>
+                                onPress={() => addToCart()} className={`px-8 py-5 rounded-full ${showAnimation ? 'bg-red' : 'bg-accent'}`}>
+                                <Text className='font-InterSemiBold text-white text-listTitle capitalize leading-none flex flex-row items-center'>{showAnimation ? <><ActivityIndicator color="#fff" /> Adding to cart</> : 'buy now'}</Text>
                             </TouchableHighlight>
                         </View>
                     </View>

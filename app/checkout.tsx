@@ -14,7 +14,7 @@ export default function Checkout() {
     const { cartItms } = useAppSelector(state => state.products)
     const cartTotal = cartItms.reduce((total, item) => total + item.price * (item.quantity ?? 1), 0)
 
-    const handleFormSubmit = (values:AddressFormValues) => {
+    const handleFormSubmit = (values: AddressFormValues) => {
         dispath(setAddress(values))
         router.replace('/payment')
     }
