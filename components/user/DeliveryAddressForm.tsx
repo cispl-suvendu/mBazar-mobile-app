@@ -92,7 +92,7 @@ const FormField = ({
             onChangeText={onChangeText}
             onBlur={onBlur}
             keyboardType={keyboardType}
-            className="w-full border border-gray px-4 rounded-full bg-white text-listTitle font-InterSemiBold text-black h-14 shadow-[2_2_26_0_text-accentDark]"
+            className="w-full border border-gray px-4 rounded-full bg-white text-listTitle font-InterSemiBold placeholder:text-black h-14 shadow-[2_2_26_0_text-accentDark]"
         />
         {error ? <Text className='text-red font-InterMedium text-smalTitle mt-2 pl-2'>{error}</Text> : null}
     </View>
