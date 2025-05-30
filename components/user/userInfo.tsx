@@ -84,7 +84,7 @@ export default function UserInfo() {
                     value={name}
                     onChangeText={(text) => dispatch(setUserName(text))}
                     placeholder="john deo"
-                    className="w-full border border-gray px-4 rounded-full bg-white text-listTitle font-InterSemiBold text-black mt-2 mb-6"
+                    className="w-full border border-gray px-4 rounded-full bg-white text-listTitle font-InterSemiBold mt-2 mb-6 placeholder:text-black"
                     maxLength={maxLength}
                 />
                 <TouchableHighlight
