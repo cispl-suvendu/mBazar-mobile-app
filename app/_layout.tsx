@@ -15,6 +15,7 @@ import { StatusBar } from "react-native";
 import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from "react-redux";
 import "./global.css";
+import FilterDetails from "@/components/filter/filterDetails";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -75,6 +76,7 @@ export default function RootLayout() {
           </Stack>
         </ToastProvider>
         <UserInfo />
+        <FilterDetails />
       </Provider>
     </>
   )

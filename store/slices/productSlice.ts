@@ -5,9 +5,19 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async ({ skip, limit }: FetchProductsArgs) => {
-    const response = await fetch(`${API_URL}/products?limit=${limit}&skip=${skip}`);
+  async ({ skip = 0, limit = 10, sortBy, order }: FetchProductsArgs) => {
+    const params = new URLSearchParams();
+
+    params.append('limit', limit.toString());
+    params.append('skip', skip.toString());
+    if (sortBy !== undefined) {
+      params.append('sortBy', sortBy.toString());
+      params.set('limit', '1000');
+    }
+    if (order !== undefined) params.append('order', order.toString());
+    const response = await fetch(`${API_URL}/products?${params.toString()}`);
     const data = await response.json();
+
     return {
       products: data.products as Product[],
       total: data.total as number,
@@ -16,6 +26,7 @@ export const fetchProducts = createAsyncThunk(
     };
   }
 );
+
 
 export const fetchProductsByCat = createAsyncThunk(
   'products/fetchProductsByCat',
@@ -35,7 +46,7 @@ export const sortProdcutsBy = createAsyncThunk(
     const data = await response.json();
     return data;
   }
-);
+)
 
 export const fetchSingleProduct = createAsyncThunk(
   'products/fetchSingleProduct',
@@ -44,7 +55,7 @@ export const fetchSingleProduct = createAsyncThunk(
     const data = await response.json();
     return data;
   }
-);
+)
 
 export const searchProducts = createAsyncThunk(
   'products/searchProducts',
@@ -84,7 +95,13 @@ const initialState: ProductsState = {
   wishListItem: [],
   searchResult: [],
   searchQ: '',
-  searchResultLoading: true
+  searchResultLoading: true,
+  filterOptions: {
+    sortyBy:undefined,
+    sortOrder: undefined
+  },
+  showFilterModal: false,
+  filterProducts:[]
 };
 
 const productsSlice = createSlice({
@@ -177,8 +194,22 @@ const productsSlice = createSlice({
         console.error('Invalid wish list items format');
       }
     },
-    clearCart:(state) => {
+    clearCart: (state) => {
       state.cartItms = initialState.cartItms
+    },
+    handleShowFilterModal: (state, action) => {
+      state.showFilterModal = action.payload;
+    },
+    handleSetFiltervalue: (state, action) => {
+      const { sortBy, sortByorder } = action.payload
+      state.filterOptions.sortOrder = sortByorder
+      state.filterOptions.sortyBy = sortBy
+    },
+    handleClearFiltervalue: (state) => {
+      state.filterOptions.sortOrder = initialState.filterOptions.sortOrder
+      state.filterOptions.sortyBy = initialState.filterOptions.sortyBy
+      state.showFilterModal = initialState.showFilterModal
+      state.filterProducts = initialState.filterProducts;
     }
   },
   extraReducers: (builder) => {
@@ -188,12 +219,15 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         const { products, total, skip, limit } = action.payload;
-        state.allProducts.push(...products);
+        if (state.filterOptions.sortyBy && state.filterOptions.sortOrder) {
+          state.filterProducts = products
+        } else {
+          state.allProducts = [...state.allProducts, ...products];
+        }
         state.pagination.skip = skip + limit;
         state.pagination.total = total;
         state.hasMore = skip + limit < total;
         state.loading = false;
-
       })
       .addCase(fetchProducts.rejected, (state) => {
         state.loading = false;
@@ -234,7 +268,7 @@ const productsSlice = createSlice({
 
 
 export default productsSlice.reducer;
-export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem, clearSearchResult, setSearchQ, clearSetSearchQ, getSavedCartItems, getSavedWishListItems, clearCart } = productsSlice.actions;
+export const { clearProductsByCategory, clearCurrentProduct, addQuantity, removeQuantity, setDefaultQuantity, handleAddToCart, handleRemoveCartItem, handleAddToWishList, handleRemoveWishListItem, clearSearchResult, setSearchQ, clearSetSearchQ, getSavedCartItems, getSavedWishListItems, clearCart, handleShowFilterModal, handleSetFiltervalue, handleClearFiltervalue } = productsSlice.actions;
 
 
 

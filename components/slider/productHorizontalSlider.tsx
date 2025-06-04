@@ -13,7 +13,7 @@ export default function ProductHorizontalSlider({ sectionTitle, sectionButtonLin
             <SectionHeading title={sectionTitle} button_link={sectionButtonLink} button_label={sectionButtonLabel} isWhite={sectionHeadingIsWhite} />
             {isLoading ? <FlatList className="w-full px-4 pt-4 pb-10" horizontal={true} showsHorizontalScrollIndicator={false} data={dummyProduct} keyExtractor={item => item.id.toString()} renderItem={({ item }) => (
                 <ProductSkeleton />
-            )} /> : <FlatList className="w-full px-4 pt-4 pb-10" horizontal={true} showsHorizontalScrollIndicator={false} data={sliderData} keyExtractor={item => item.title.toString()} renderItem={({ item }) => (
+            )} /> : <FlatList className="w-full px-4 pt-4 pb-10" horizontal={true} showsHorizontalScrollIndicator={false} data={sliderData} keyExtractor={(_item, index) => index.toString()} renderItem={({ item }) => (
                 isTopDeals ? <TopDealCard item={item} /> : <ProductCard item={item} />
             )} />}
         </View>

@@ -67,8 +67,10 @@ export interface categorySliderProps {
 }
 
 export interface FetchProductsArgs {
-    skip: number;
-    limit: number;
+    skip?: number;
+    limit?: number;
+    sortBy?: string;
+    order?: string;
 }
 
 export interface SortProductsArgs {
@@ -96,7 +98,13 @@ export interface ProductsState {
     currentProductQuantity:number,
     searchResult:Product[],
     searchQ: string,
-    searchResultLoading: boolean
+    searchResultLoading: boolean,
+    filterOptions:{
+        sortyBy:string | undefined,
+        sortOrder:string | undefined
+    },
+    showFilterModal: boolean,
+    filterProducts:Product[]
   }
 
   export interface CategoryState {

@@ -6,19 +6,17 @@ import { fetchProducts } from '@/store/slices/productSlice'
 import React, { useEffect } from 'react'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import Filter from '@/components/filter/filter'
 
 export default function Store() {
 
     const dispatch = useAppDispatch()
-    const { allProducts, pagination, loading, hasMore } = useAppSelector(state => state.products)
+    const { allProducts, pagination, loading, hasMore , filterProducts} = useAppSelector(state => state.products)
     const { allCategory, loading: isCatLoading } = useAppSelector(state => state.category)
     const handleFetchProducts = () => {
         if (loading || !hasMore) return;
         dispatch(fetchProducts({ skip: pagination.skip + 1, limit: pagination.limit + 1 }))
     }
-    useEffect(() => {
-        handleFetchProducts()
-    }, [])
 
     const renderFooter = () => {
         if (loading && allProducts.length > 0) {
@@ -42,8 +40,10 @@ export default function Store() {
         return (
             <>
                 <View className='flex-row justify-between items-start px-6'>
-                    <Text className='font-JostSemiBold text-mediumTitle capitalize flex-1 text-black'>All Products</Text>
-                    <Text className='font-InterSemiBold text-paragraph text-graydark'>{allProducts.length}</Text>
+                    <Text className='font-JostSemiBold text-mediumTitle capitalize text-black'>All Products</Text>
+                    <View>
+                        <Filter />
+                    </View>
                 </View>
             </>
         )
@@ -59,12 +59,13 @@ export default function Store() {
                     )} />}
                 </View>
                 <FlatList
-                    data={allProducts}
-                    keyExtractor={(item) => item.title.toString()}
+                    data={filterProducts.length > 0 ? filterProducts : allProducts}
+                    keyExtractor={(_item, index) => index.toString()}
                     renderItem={({ item }) => <ProductCard item={item} />}
                     onEndReached={handleFetchProducts}
                     onEndReachedThreshold={1}
                     numColumns={2}
+                    extraData={filterProducts.length}
                     ListEmptyComponent={() => (
                         <View style={{ alignItems: 'center', marginTop: 50 }}>
                             <Text>No Products Found</Text>
