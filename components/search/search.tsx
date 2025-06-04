@@ -32,7 +32,7 @@ export default function Search() {
     return (
         <View className="relative z-10">
             <Text className="font-icon absolute right-4 z-10 text-accent text-[26px] top-2/4 -translate-y-2/4">search</Text>
-            <TextInput value={searchQ} onChangeText={(newTerms) => dispath(setSearchQ(newTerms))} placeholder="Search our store" className="placeholder:text-graydark bg-white rounded-xl p-4 h-14 font-InterSemiBold text-listTitle shadow-[2_2_26_0_text-accentDark]" />
+            <TextInput value={searchQ} onChangeText={(newTerms) => dispath(setSearchQ(newTerms))} placeholder="Search our store" className="placeholder:text-graydark bg-white rounded-xl p-4 h-14 font-InterSemiBold text-listTitle shadow-[2_2_26_0_text-accentDark]" autoComplete="off" autoCorrect={false} spellCheck={false} />
             {searchQ &&
                 <>
                     <View className='absolute left-0 top-[100%] bg-white p-6 w-full rounded-2xl shadow-[0_0_10_text-accentDark] h-[300px]'>
